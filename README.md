@@ -51,12 +51,12 @@
 ### 📊 GitHub Stats
 
 <p align="center">
-  <img src="https://github-readme-stats-seven-pied-telln19kzf.vercel.app/api?username=codeforfury&show_icons=true&theme=radical&cache_seconds=0&ts=1" alt="GitHub Stats" height="165"/>
+  <img src="https://github-readme-stats-seven-pied-telln19kzf.vercel.app/api?username=codeforfury&show_icons=true&theme=radical&cache_seconds=0&ts=1788636666" alt="GitHub Stats" height="165"/>
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=codeforfury&theme=radical" alt="GitHub Streak" height="165"/>
 </p>
 
 <p align="center">
-  <img src="https://github-readme-stats-seven-pied-telln19kzf.vercel.app/api/top-langs/?username=codeforfury&layout=compact&theme=radical&cache_seconds=0&ts=1" alt="Top Languages" />
+  <img src="https://github-readme-stats-seven-pied-telln19kzf.vercel.app/api/top-langs/?username=codeforfury&layout=compact&theme=radical&cache_seconds=0&ts=1788636666" alt="Top Languages" />
 </p>
 
 <p align="center">
