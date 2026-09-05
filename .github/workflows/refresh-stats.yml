@@ -1,0 +1,57 @@
+name: Refresh README Stats Cache
+
+on:
+  push:
+    branches: [main]   # ⚠️ change this to "master" if that's your repo's default branch
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # Allows manual trigger from the Actions tab too
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    # Skip if this push was the bot's own automated commit — prevents an infinite loop
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Check if this commit is already the bot's cache-refresh commit
+        id: check
+        run: |
+          LAST_MSG=$(git log -1 --pretty=%B)
+          if [[ "$LAST_MSG" == *"[skip ci]"* ]]; then
+            echo "is_bot_commit=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_bot_commit=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update cache-busting timestamp in README
+        run: |
+          TIMESTAMP=$(date +%s)
+          sed -i "s/ts=[0-9]*/ts=${TIMESTAMP}/g" README.md
+
+      - name: Commit and push
+        run: |
+          git add README.md
+          if [ "${{ steps.check.outputs.is_bot_commit }}" == "true" ]; then
+            # Last commit was already our own bot commit -> amend it, no new commit added
+            git commit --amend -m "chore: refresh stats cache [skip ci]" --date="$(date -R)"
+            git push --force
+          else
+            # Last commit was a real manual commit -> add a new commit on top of it
+            git commit -m "chore: refresh stats cache [skip ci]" --date="$(date -R)" || echo "Nothing to commit"
+            git push
+          fi
